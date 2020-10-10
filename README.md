@@ -4,4 +4,4 @@ WARNING: You need Python 3.8.5 installed alongside with PyQt5. You can install t
 
 Used assets:
 https://www.flaticon.com/free-icon/eraser_847452?term=eraser&page=1&position=2
-https://www.flaticon.com/free-icon/bucket_834205?term=bucket fill&page=1&position=6
+https://www.flaticon.com/free-icon/bucket_834205?term=bucket 
