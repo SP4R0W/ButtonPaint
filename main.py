@@ -425,21 +425,17 @@ class Ui_MainWindow(object):
         self.drawButtons(MainWindow)
 
     def createNewImage(self):
-        print(self.size)
         self.color = str(self.colorBox.currentText())
         s = str(self.sizeBox.currentText()).split("x")
         self.size = int(s[0])
-
-        print(self.color, self.size)
 
         self.setupMainUi(MainWindow)
 
     def createLoadedImage(self):
         self.loaded = True
 
-        print(self.size)
         s = str(self.size).split("x")
-        print(s)
+
         self.size = int(s[0])
         self.setupMainUi(MainWindow)
 
@@ -460,10 +456,10 @@ class Ui_MainWindow(object):
         y = int(pos[1])
 
         if self.loaded == False:
-            for z in range(0,self.size):
+            for _ in range(0,self.size):
                 x = int(pos[0])
 
-                for c in range(0,self.size):                
+                for _ in range(0,self.size):
                     self.count += 1
                     self.buttons["Button"+str(self.count)] = [self.color,x,y]
                     self.b = QtWidgets.QPushButton(MainWindow)
@@ -473,25 +469,24 @@ class Ui_MainWindow(object):
                     self.b.clicked.connect(lambda x=self.size,index=self.count: self.changeColor(MainWindow,index))
                     self.b.setVisible(True)
 
-
                     x += 23
 
                 y += 23
         else:
-            for z in range(0,self.size):
+            for _ in range(0,self.size):
                 x = int(pos[0])
 
-                for c in range(0,self.size):
+                for _ in range(0,self.size):
                     self.count += 1
                     data = self.buttons["Button"+str(self.count)]
-                    print(data)
+
                     color = data[0]
                     x = data[1]
                     y = data[2]
                     self.buttons["Button"+str(self.count)] = [color,x,y]
                     self.b = QtWidgets.QPushButton(MainWindow)
                     self.b.setGeometry(QtCore.QRect(x, y, 25, 25))
-                    self.b.setText(str(self.count))
+                    self.b.setText("")
                     self.b.setStyleSheet("background-color: " + str(color) + ";")
                     self.b.clicked.connect(lambda x=self.size,index=self.count: self.changeColor(MainWindow,index))
                     self.b.setVisible(True)
@@ -499,7 +494,7 @@ class Ui_MainWindow(object):
                     x += 23
 
                 y += 23
-            
+
     def changeColor(self, MainWindow,index):
         if self.ishorizontal:
             self.paintHorizontal(MainWindow,index)
@@ -509,9 +504,9 @@ class Ui_MainWindow(object):
             self.fill(MainWindow,index)
         else:
 
-            for i in range(0,int(self.pensize)):
+            for _ in range(0,int(self.pensize)):
 
-                for c in range(0,int(self.pensize)):
+                for _ in range(0,int(self.pensize)):
                     try:
                         pos = self.buttons["Button"+str(index)]
                         x = pos[1]
@@ -532,14 +527,12 @@ class Ui_MainWindow(object):
                 index += self.size
 
     def paintHorizontal(self, MainWindow,index):
-
         if index % self.size == 0:
             row = index / self.size
         else:
             row = m.ceil(index / self.size)
 
         correctrow = ((row - 1) * self.size) + 1
-        print(correctrow)
 
         for x in range(0,self.size):
             index = correctrow
@@ -559,26 +552,20 @@ class Ui_MainWindow(object):
             correctrow += 1
 
     def paintVertical(self, MainWindow, index):
-        whichtocolor = []
-
         if index % self.size == 0:
             row = index / self.size
         else:
             row = m.ceil(index / self.size)
 
-        correctrow = ((row - 1) * self.size) + 1
-
         neededdown = int(self.size) - row
-        neededup = int(self.size) - neededdown
 
         x = index
-        for i in range(1,int(neededdown)+1):
+        for _ in range(1,int(neededdown)+1):
             x += int(self.size)
-            print(x)
 
         correctbutton = x
 
-        for item in range(0,self.size):
+        for _ in range(0,self.size):
             index = correctbutton
 
             pos = self.buttons["Button"+str(int(index))]
@@ -597,21 +584,17 @@ class Ui_MainWindow(object):
             correctbutton -= self.size
 
     def fill(self,MainWindow,index):
-        
         col = self.buttons["Button"+str(index)]
         color = col[0]
-        print(color)
 
         for button in range(1,(self.size*self.size)+1):
-            print(button)
             pos = self.buttons["Button"+str(int(button))]
             col = pos[0]
-            print(col)
+
             x = pos[1]
             y = pos[2]
 
             if col == color:
-                print(True)
                 self.b = QtWidgets.QPushButton(MainWindow)
                 self.b.setGeometry(QtCore.QRect(x, y, 25, 25))
                 self.b.setText("")
@@ -637,7 +620,6 @@ class Ui_MainWindow(object):
 
     def changePenColor(self,MainWindow,color):
         self.pencolor = color
-        print(self.pencolor)
 
     def changePenSize(self,MainWindow,size):
         self.ishorizontal = False
@@ -647,7 +629,6 @@ class Ui_MainWindow(object):
         self.pensize = size
         if int(self.pensize) > int(self.size):
             self.pensize = self.size
-        print(self.pensize)
 
     def rubber(self,MainWindow):
         self.pencolor = "white"
@@ -657,7 +638,7 @@ class Ui_MainWindow(object):
         msg.setWindowTitle("About")
         msg.setText("Button Paint v1.0 Coded by SP4R0W")
         msg.setIcon(QtWidgets.QMessageBox.Information)
-        
+
         x = msg.exec_()
 
     def showHelp(self,MainWindow):
@@ -665,21 +646,19 @@ class Ui_MainWindow(object):
         msg.setWindowTitle("Help")
         msg.setText("If you want to switch back to regular pen, click on the pen size button.")
         msg.setIcon(QtWidgets.QMessageBox.Warning)
-        
+
         x = msg.exec_()
 
     def save(self,MainWindow):
         if self.directory == "":
             self.saveAs(MainWindow)
         else:
-            print(self.directory)
             savefile = open(self.directory,'wb')
             pickle.dump(self.buttons,savefile)
             savefile.close()
 
     def saveAs(self,MainWindow):
         saveDirectory = QtWidgets.QFileDialog.getSaveFileName(MainWindow,"Select directory to save",r"C:","Pickle files (*.pickle)")
-        print(saveDirectory)
         try:
             self.directory = saveDirectory[0]
             savefile = open(saveDirectory[0],'wb')
@@ -691,16 +670,13 @@ class Ui_MainWindow(object):
     def load(self,MainWindow):
         try:
             loadLocation = QtWidgets.QFileDialog.getOpenFileName(caption="Open a file",directory=r"C:",filter="Pickle files (*.pickle)")
-            print(loadLocation)
             self.directory = loadLocation[0]
 
             loadFile = open(loadLocation[0],'rb')
             self.buttons = pickle.load(loadFile)
 
             self.size = self.buttons["Size"]
-            print(self.size)
 
-            print(MainWindow)
             self.createLoadedImage()
         except:
             pass
